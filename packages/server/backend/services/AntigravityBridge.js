@@ -15,7 +15,7 @@ class AntigravityBridge {
         this.browser = null;
         this.page = null;
         this.isConnected = false;
-        this.debugUrl = 'http://127.0.0.1:9000';
+        this.debugUrl = 'http://127.0.0.1:9223';
 
         // Selectors cho Antigravity UI (cần điều chỉnh theo thực tế)
         this.selectors = {

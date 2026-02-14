@@ -66,7 +66,7 @@ async function startup() {
 `);
 
     console.log('IMPORTANT: Make sure Antigravity is running with:');
-    console.log('  --remote-debugging-port=9000\n');
+    console.log('  --remote-debugging-port=9223\n');
 
     // Step 1: Start server (require will start it)
     console.log('[1/3] Starting server...');
@@ -113,6 +113,7 @@ async function startup() {
 ║  ✅ ALL SERVICES STARTED!                                   ║
 ╠════════════════════════════════════════════════════════════╣
 ║  🌐 Server:       http://localhost:1103                     ║
+║  📁 Frontend:    Access via http://YOUR_PC_IP:1103         ║
 ║  📦 Injection:    Completed                                 ║
 ║  🎯 Detector:     Running                                   ║
 ╚════════════════════════════════════════════════════════════╝

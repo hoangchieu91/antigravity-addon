@@ -75,15 +75,15 @@ REM ========================================
 echo [5/5] Kiểm tra Antigravity CDP...
 echo.
 
-netstat -ano | findstr :9000 >nul 2>&1
+netstat -ano | findstr :9223 >nul 2>&1
 if errorlevel 1 (
-    echo ⚠️  Antigravity CDP chưa chạy trên port 9000
+    echo ⚠️  Antigravity CDP chưa chạy trên port 9223
     echo.
     echo 📌 Để bật CDP, chạy:
     echo    .\OPEN_ANTIGRAVITY_CDP.vbs
     echo.
     echo    Hoặc thêm vào shortcut Antigravity:
-    echo    --remote-debugging-port=9000
+    echo    --remote-debugging-port=9223
     echo.
 ) else (
     echo ✅ Antigravity CDP đang chạy!
@@ -98,7 +98,7 @@ echo ╚════════════════════════
 echo.
 echo 🚀 Các bước tiếp theo:
 echo.
-echo    1. Đảm bảo Antigravity đang chạy với CDP (port 9000)
+echo    1. Đảm bảo Antigravity đang chạy với CDP (port 9223)
 echo       Chạy: .\OPEN_ANTIGRAVITY_CDP.vbs
 echo.
 echo    2. Start AntiBridge server:

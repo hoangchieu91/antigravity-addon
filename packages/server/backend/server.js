@@ -59,6 +59,13 @@ app.locals.conversationWatcher = conversationWatcher;
 app.locals.acceptDetector = acceptDetector;
 
 // Middleware
+app.use((req, res, next) => {
+    const time = new Date().toISOString();
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const userAgent = req.get('User-Agent');
+    console.log(`[${time}] 🌍 HTTP: ${req.method} ${req.url} | IP: ${ip} | device: ${userAgent}`);
+    next();
+});
 app.use(cors());
 app.use(express.json({ limit: '20gb' })); // Large limit for video/file upload
 app.use(express.urlencoded({ limit: '20gb', extended: true }));
@@ -176,6 +183,9 @@ app.post('/api/upload-image', (req, res) => {
 // WebSocket connection handling
 wss.on('connection', (ws, req) => {
     const urlPath = req.url || '';
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    const userAgent = req.headers['user-agent'];
+    console.log(`[${new Date().toISOString()}] 🔌 WS Connection | IP: ${ip} | Device: ${userAgent} | Path: ${urlPath}`);
 
     // ===== HANDLE ACTION BRIDGE CONNECTION (from detect_actions.js) =====
     if (urlPath === '/ws/action-bridge') {

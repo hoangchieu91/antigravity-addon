@@ -3,10 +3,10 @@
  * API endpoints for injecting scripts into Antigravity via CDP
  * 
  * LUỒNG HOẠT ĐỘNG:
- * 1. User mở Antigravity với --remote-debugging-port=9000
+ * 1. User mở Antigravity với --remote-debugging-port=9223
  * 2. User chạy START_SERVER.bat -> Server start + gọi /api/inject/all
  * 3. API này inject cả chat_bridge_ws.js và detect_actions.js vào console Antigravity
- * 4. User chạy START_ACCEPT_DETECTOR.bat -> Chỉ gọi /api/actions/start
+ * 4. User chạy START_SERVER.bat -> startup.js gọi /api/actions/start thông qua actions.js
  */
 
 const express = require('express');
@@ -32,7 +32,7 @@ router.post('/chat-bridge', async (req, res) => {
         const connected = await antigravityBridge.connect();
         if (!connected) {
             return res.status(503).json({
-                error: 'Cannot connect to Antigravity CDP. Make sure Antigravity is running with --remote-debugging-port=9000'
+                error: 'Cannot connect to Antigravity CDP. Make sure Antigravity is running with --remote-debugging-port=9223'
             });
         }
 
@@ -159,7 +159,7 @@ router.post('/all', async (req, res) => {
         const connected = await antigravityBridge.connect();
         if (!connected) {
             return res.status(503).json({
-                error: 'Cannot connect to Antigravity CDP. Make sure Antigravity is running with --remote-debugging-port=9000'
+                error: 'Cannot connect to Antigravity CDP. Make sure Antigravity is running with --remote-debugging-port=9223'
             });
         }
 

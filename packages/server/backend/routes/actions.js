@@ -155,5 +155,63 @@ module.exports = (antigravityBridge) => {
         }
     });
 
+    // ========== FOR COMPATIBILITY WITH FRONTEND (app.js) ==========
+
+    router.post('/accept-cdp', async (req, res) => {
+        try {
+            console.log('🟢 [app.js] Accept via CDP request...');
+            const result = await antigravityBridge.acceptByClick();
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
+
+    router.post('/reject-cdp', async (req, res) => {
+        try {
+            console.log('🔴 [app.js] Reject via CDP request...');
+            const result = await antigravityBridge.rejectByClick();
+            res.json(result);
+        } catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
+
+    // ========== FOR COMPATIBILITY WITH STARTUP (startup.js) ==========
+
+    router.post('/start', async (req, res) => {
+        try {
+            console.log('🎯 [startup.js] Starting AcceptDetector...');
+            const acceptDetector = req.app.locals.acceptDetector;
+            if (acceptDetector) {
+                // Determine base WS URL
+                const port = process.env.PORT || 1103;
+                const wsUrl = `ws://localhost:${port}/ws/action-bridge`;
+
+                acceptDetector.start(wsUrl);
+                res.json({ success: true, message: 'AcceptDetector started', wsUrl });
+            } else {
+                res.status(503).json({ success: false, error: 'AcceptDetector service not available' });
+            }
+        } catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
+
+    router.post('/stop-detector', async (req, res) => {
+        try {
+            console.log('🛑 Stopping AcceptDetector...');
+            const acceptDetector = req.app.locals.acceptDetector;
+            if (acceptDetector) {
+                acceptDetector.stop();
+                res.json({ success: true, message: 'AcceptDetector stopped' });
+            } else {
+                res.status(503).json({ success: false, error: 'AcceptDetector service not available' });
+            }
+        } catch (error) {
+            res.status(500).json({ success: false, error: error.message });
+        }
+    });
+
     return router;
 };

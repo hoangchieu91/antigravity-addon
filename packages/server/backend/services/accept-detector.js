@@ -9,7 +9,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const BASE_PORT = 9000;  // Antigravity đang chạy CDP trên port 9000
+const BASE_PORT = 9223;  // Antigravity đang chạy CDP trên port 9223
 const PORT_RANGE = 5;    // Scan ports 9218-9228 to cover edge cases
 
 class AcceptDetector {
