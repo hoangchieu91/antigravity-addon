@@ -32,11 +32,11 @@
 ## 🔌 Cách khởi chạy
 
 ### Bước 1: Mở Antigravity với cổng Debug
-Hệ thống cần Antigravity mở cổng debug 9000 để điều khiển.
+Hệ thống cần Antigravity mở cổng debug 9223 để điều khiển.
 - **Windows**: Chạy file `OPEN_ANTIGRAVITY_CDP.bat`.
 - **Linux**: Chạy lệnh sau trong terminal:
   ```bash
-  antigravity --remote-debugging-port=9000
+  antigravity --remote-debugging-port=9223
   ```
 
 ### Bước 2: Chạy Server AntiBridge

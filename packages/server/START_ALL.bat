@@ -28,7 +28,7 @@ echo ========================================
 echo   All components started!
 echo ========================================
 echo.
-echo   Antigravity: localhost:9000 (CDP)
+echo   Antigravity: localhost:9223 (CDP)
 echo   Server:      localhost:8000
 echo   Web UI:      http://localhost:8000
 echo.

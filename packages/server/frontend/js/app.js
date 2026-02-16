@@ -76,6 +76,7 @@ class PhoneBridgeApp {
             layoutScaleSlider: document.getElementById('layout-scale-slider'),
             settingsSessionId: document.getElementById('settings-session-id'),
             settingsConnectionStatus: document.getElementById('settings-connection-status'),
+            lastSyncTime: document.getElementById('last-sync-time'),
             maxMessagesInput: document.getElementById('max-messages-input'),
             saveMaxMessagesBtn: document.querySelector('.btn-save-messages'),
 
@@ -482,6 +483,7 @@ class PhoneBridgeApp {
             };
 
             this.ws.onmessage = (event) => {
+                this.updateLastSync();
                 if (event.data === 'pong') return;
                 this.handleWebSocketMessage(event);
             };
@@ -500,6 +502,7 @@ class PhoneBridgeApp {
         this.heartbeatInterval = setInterval(() => {
             if (this.ws && this.ws.readyState === WebSocket.OPEN) {
                 this.ws.send(JSON.stringify({ type: 'ping' }));
+                this.updateLastSync();
             }
         }, 25000);
     }
@@ -1035,6 +1038,12 @@ class PhoneBridgeApp {
         // Parse [Image: path] and convert to actual images
         content = this.parseImageLinks(content);
 
+        // Add Timestamp
+        const now = new Date();
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+            now.getMinutes().toString().padStart(2, '0');
+        content += `<span class="message-time">${timeStr}</span>`;
+
         bubble.innerHTML = content;
 
         // Add collapse handlers for Antigravity elements (thinking, tasks)
@@ -1047,6 +1056,28 @@ class PhoneBridgeApp {
         requestAnimationFrame(() => {
             bubble.scrollIntoView({ behavior: 'auto', block: 'end' });
         });
+    }
+
+    updateSettingsInfo() {
+        if (this.elements.settingsSessionId) {
+            this.elements.settingsSessionId.textContent = this.sessionId || '--';
+        }
+        if (this.elements.settingsConnectionStatus) {
+            this.elements.settingsConnectionStatus.textContent = this.isConnected ? 'Đã kết nối' : 'Mất kết nối';
+            this.elements.settingsConnectionStatus.className = 'connection-badge ' + (this.isConnected ? 'connected' : 'disconnected');
+        }
+    }
+
+    /**
+     * Update the 'Last Sync' display with current time
+     */
+    updateLastSync() {
+        if (!this.elements.lastSyncTime) return;
+        const now = new Date();
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+            now.getMinutes().toString().padStart(2, '0') + ':' +
+            now.getSeconds().toString().padStart(2, '0');
+        this.elements.lastSyncTime.textContent = timeStr;
     }
 
     /**
@@ -1361,10 +1392,10 @@ class PhoneBridgeApp {
     }
 
     /**
- * Toggle the Action Menu (Hamburger)
- * Bấm 1 lần mở, bấm lần nữa đóng
- * Hiện cả model-row (lên trên) và action-menu (ngang)
- */
+    * Toggle the Action Menu (Hamburger)
+    * Bấm 1 lần mở, bấm lần nữa đóng
+    * Hiện cả model-row (lên trên) và action-menu (ngang)
+    */
     toggleActionMenu(forceState) {
         const menu = this.elements.actionMenu;
         const modelRow = document.getElementById('model-row');

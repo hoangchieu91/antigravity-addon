@@ -23,10 +23,11 @@ const vscode = require('vscode');
 
 // ============ STATE ============
 let autoAcceptEnabled = false;
-let autoAcceptInterval = null;
 let statusBarItem = null;
+let outputChannel = null;
 let currentDelay = 2000;
 let additionalCommands = [];
+let autoAcceptTimer = null;
 
 const MIN_DELAY = 500;
 const MAX_DELAY = 10000;
@@ -52,6 +53,11 @@ function activate(context) {
             }
         })
     );
+
+    // Create output channel for logging
+    outputChannel = vscode.window.createOutputChannel('AntiBridge AutoAccess');
+    context.subscriptions.push(outputChannel);
+    log('🚀 AntiBridge-AutoAccept activated!');
 
     // Create status bar item
     statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 10000);
@@ -112,7 +118,11 @@ function updateStatusBar() {
 
         statusBarItem.text = `🤖 Auto (${currentDelay}ms)${timerText}`;
         statusBarItem.tooltip = `Auto Accept: ON\nDelay: ${currentDelay}ms\n${autoAcceptEndTime ? 'Ends at: ' + new Date(autoAcceptEndTime).toLocaleTimeString() : ''}\nClick to pause`;
-        statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+
+        // Use a brighter color if recently triggered (handled by flashStatusBar)
+        if (!statusBarItem.backgroundColor) {
+            statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+        }
     } else {
         statusBarItem.text = `📱 Manual`;
         statusBarItem.tooltip = `Manual mode\nDelay: ${currentDelay}ms\nCtrl+Alt+Shift+A = Accept\nCtrl+Alt+Shift+R = Reject`;
@@ -136,6 +146,22 @@ function toggleAutoAccept() {
         stopAutoAccept();
         vscode.window.showInformationMessage('📱 Manual Mode');
     }
+}
+
+function flashStatusBar() {
+    if (!statusBarItem || !autoAcceptEnabled) return;
+
+    const originalColor = statusBarItem.backgroundColor;
+    // Brighten the status bar temporarily
+    statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+    statusBarItem.text = `🔥 ACCEPTING...`;
+
+    setTimeout(() => {
+        if (autoAcceptEnabled) {
+            statusBarItem.backgroundColor = originalColor;
+            updateStatusBar();
+        }
+    }, 500);
 }
 
 async function startAutoAcceptWithTimer() {
@@ -184,28 +210,60 @@ function stopTimerRefresh() {
     }
 }
 
-function startAutoAccept() {
+function log(message) {
+    const timestamp = new Date().toLocaleTimeString();
+    if (outputChannel) {
+        outputChannel.appendLine(`[${timestamp}] ${message}`);
+    }
+    console.log(`[AutoAccept] ${message}`);
+}
+
+async function startAutoAccept() {
     stopAutoAccept();
 
-    autoAcceptInterval = setInterval(async () => {
+    log(`▶️ Starting Auto Accept (Delay: ${currentDelay}ms)`);
+
+    const runCycle = async () => {
         if (!autoAcceptEnabled) return;
 
-        try { await vscode.commands.executeCommand('antigravity.agent.acceptAgentStep'); } catch (e) { }
-        try { await vscode.commands.executeCommand('antigravity.terminal.accept'); } catch (e) { }
-        try { await vscode.commands.executeCommand('antigravity.terminalCommand.accept'); } catch (e) { }
+        const commandsToTry = [
+            'antigravity.agent.acceptAgentStep',
+            'antigravity.terminal.accept',
+            'antigravity.terminalCommand.accept',
+            ...additionalCommands
+        ];
 
-        // Execute additional commands from settings
-        for (const cmd of additionalCommands) {
-            try { await vscode.commands.executeCommand(cmd); } catch (e) { }
+        let anySuccess = false;
+        for (const cmd of commandsToTry) {
+            try {
+                // Since we can't reliably know if a command did something, 
+                // we'll trigger the flash if it at least tried to run.
+                await vscode.commands.executeCommand(cmd);
+                anySuccess = true;
+            } catch (e) {
+                if (e.message && !e.message.includes('not found')) {
+                    log(`❌ Error executing ${cmd}: ${e.message}`);
+                }
+            }
         }
-    }, currentDelay);
+
+        if (anySuccess) {
+            flashStatusBar();
+        }
+
+        // Schedule next run
+        autoAcceptTimer = setTimeout(runCycle, currentDelay);
+    };
+
+    autoAcceptTimer = setTimeout(runCycle, currentDelay);
 }
 
 function stopAutoAccept() {
-    if (autoAcceptInterval) {
-        clearInterval(autoAcceptInterval);
-        autoAcceptInterval = null;
+    if (autoAcceptTimer) {
+        clearTimeout(autoAcceptTimer);
+        autoAcceptTimer = null;
     }
+    log('⏹️ Auto Accept stopped');
 }
 
 // ============ DELAY ADJUSTMENT ============

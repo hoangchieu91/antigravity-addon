@@ -12,7 +12,7 @@ async function inspectModelSelector() {
 
     try {
         // Kết nối CDP
-        client = await CDP({ port: 9000 });
+        client = await CDP({ port: 9223 });
         const { Runtime, DOM } = client;
 
         await Runtime.enable();

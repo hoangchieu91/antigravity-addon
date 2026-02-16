@@ -25,7 +25,7 @@ Tùy vào máy bạn đang dùng, hãy vào thư mục tương ứng:
 - **Linux**: Chạy file `kich_hoat_tat_ca.sh` (nhớ cấp quyền thực thi: `chmod +x kich_hoat_tat_ca.sh`).
 
 **Lệnh này sẽ tự động:**
-1. Mở Antigravity với cổng Debug 9000.
+1. Mở Antigravity với cổng Debug 9223.
 2. Khởi động Server AntiBridge.
 3. Mở sẵn trang điều khiển trên trình duyệt cho bạn.
 

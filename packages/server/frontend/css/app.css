@@ -314,9 +314,24 @@ body {
     }
 }
 
-/* ========================================
-   Chat Main (Full Screen)
-   ======================================== */
+.last-sync-time {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-family: monospace;
+    opacity: 0.8;
+}
+
+.message-time {
+    display: block;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-align: right;
+}
+
+.message.user .message-time {
+    color: rgba(255, 255, 255, 0.5);
+}
 
 .chat-main {
     flex: 1;
@@ -1942,7 +1957,7 @@ input:checked+.slider:before {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.restart-section button + button {
+.restart-section button+button {
     margin-top: 10px;
 }
 
@@ -2476,77 +2491,72 @@ input:checked+.slider:before {
     transform-origin: top center;
 }
 
- / *   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =   * / 
- / *       S N A P S H O T   T A B   S T Y L E S                                       * / 
- / *   = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =   * / 
- 
- . s n a p s h o t - m a i n   { 
-         f l e x :   1 ; 
-         d i s p l a y :   f l e x ; 
-         f l e x - d i r e c t i o n :   c o l u m n ; 
-         o v e r f l o w :   h i d d e n ; 
- } 
- 
- . s n a p s h o t - c o n t a i n e r   { 
-         f l e x :   1 ; 
-         o v e r f l o w :   a u t o ; 
-         p a d d i n g :   1 0 p x ; 
-         b a c k g r o u n d :   r g b a ( 1 6 ,   1 6 ,   3 2 ,   0 . 6 ) ; 
- } 
- 
- . s n a p s h o t - s t a t u s   { 
-         t e x t - a l i g n :   c e n t e r ; 
-         f o n t - s i z e :   0 . 8 5 r e m ; 
-         c o l o r :   v a r ( - - t e x t - s e c o n d a r y ) ; 
-         m a r g i n - b o t t o m :   1 0 p x ; 
-         p a d d i n g :   8 p x ; 
-         b a c k g r o u n d :   r g b a ( 1 0 8 ,   9 9 ,   2 5 5 ,   0 . 1 ) ; 
-         b o r d e r - r a d i u s :   8 p x ; 
- } 
- 
- . s n a p s h o t - s t a t u s . h i d d e n   { 
-         d i s p l a y :   n o n e ; 
- } 
- 
- . s n a p s h o t - r o o t   { 
-         m i n - h e i g h t :   2 0 0 p x ; 
-         b o r d e r - r a d i u s :   1 2 p x ; 
-         b o r d e r :   1 p x   s o l i d   r g b a ( 2 5 5 ,   2 5 5 ,   2 5 5 ,   0 . 0 8 ) ; 
-         p a d d i n g :   1 0 p x ; 
-         o v e r f l o w :   a u t o ; 
-         b a c k g r o u n d :   # 1 e 1 e 1 e ; 
-         c o l o r :   # d 4 d 4 d 4 ; 
-         
-         / *   V S   C o d e   t h e m e   v a r i a b l e s   f a l l b a c k   * / 
-         - - v s c o d e - e d i t o r - b a c k g r o u n d :   # 1 e 1 e 1 e ; 
-         - - v s c o d e - e d i t o r - f o r e g r o u n d :   # d 4 d 4 d 4 ; 
-         - - v s c o d e - s i d e B a r - b a c k g r o u n d :   # 2 5 2 5 2 6 ; 
-         - - v s c o d e - s i d e B a r - f o r e g r o u n d :   # c c c c c c ; 
-         - - v s c o d e - a c t i v i t y B a r - b a c k g r o u n d :   # 3 3 3 3 3 3 ; 
-         - - v s c o d e - t i t l e B a r - a c t i v e B a c k g r o u n d :   # 3 c 3 c 3 c ; 
-         - - v s c o d e - i n p u t - b a c k g r o u n d :   # 3 c 3 c 3 c ; 
-         - - v s c o d e - i n p u t - f o r e g r o u n d :   # c c c c c c ; 
-         - - v s c o d e - b u t t o n - b a c k g r o u n d :   # 0 e 6 3 9 c ; 
-         - - v s c o d e - b u t t o n - f o r e g r o u n d :   # f f f f f f ; 
-         - - v s c o d e - p a n e l - b a c k g r o u n d :   # 1 e 1 e 1 e ; 
-         - - v s c o d e - p a n e l - b o r d e r :   # 8 0 8 0 8 0 ; 
-         - - v s c o d e - b a d g e - b a c k g r o u n d :   # 4 d 4 d 4 d ; 
-         - - v s c o d e - b a d g e - f o r e g r o u n d :   # f f f f f f ; 
-         - - v s c o d e - l i s t - h o v e r B a c k g r o u n d :   # 2 a 2 d 2 e ; 
-         - - v s c o d e - l i s t - a c t i v e S e l e c t i o n B a c k g r o u n d :   # 0 9 4 7 7 1 ; 
-         - - v s c o d e - l i s t - a c t i v e S e l e c t i o n F o r e g r o u n d :   # f f f f f f ; 
-         - - v s c o d e - e d i t o r W i d g e t - b a c k g r o u n d :   # 2 5 2 5 2 6 ; 
-         - - v s c o d e - e d i t o r W i d g e t - b o r d e r :   # 4 5 4 5 4 5 ; 
-         - - v s c o d e - t e x t L i n k - f o r e g r o u n d :   # 3 7 9 4 f f ; 
-         - - v s c o d e - t e x t P r e f o r m a t - f o r e g r o u n d :   # d 7 b a 7 d ; 
- }  
- 
- / *   H i d e   S n a p s h o t   T a b   * / 
- . t a b - b t n [ d a t a - v i e w = ' s n a p s h o t ' ]   { 
-         d i s p l a y :   n o n e   ! i m p o r t a n t ; 
- } 
- 
- # s n a p s h o t - p a n e l   { 
-         d i s p l a y :   n o n e   ! i m p o r t a n t ; 
- }  
- 
+/* ===== SNAPSHOT TAB STYLES (Modern Cleanup) ===== */
+.snapshot-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.snapshot-container {
+    flex: 1;
+    overflow: auto;
+    padding: 10px;
+    background: rgba(16, 16, 32, 0.6);
+}
+
+.snapshot-status {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    padding: 8px;
+    background: rgba(108, 99, 255, 0.1);
+    border-radius: 8px;
+}
+
+.snapshot-status.hidden {
+    display: none;
+}
+
+.snapshot-root {
+    min-height: 200px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px;
+    overflow: auto;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    /* VS Code theme variables fallback */
+    --vscode-editor-background: #1e1e1e;
+    --vscode-editor-foreground: #d4d4d4;
+    --vscode-sideBar-background: #252526;
+    --vscode-sideBar-foreground: #cccccc;
+    --vscode-activityBar-background: #333333;
+    --vscode-titleBar-activeBackground: #3c3c3c;
+    --vscode-input-background: #3c3c3c;
+    --vscode-input-foreground: #cccccc;
+    --vscode-button-background: #0e639c;
+    --vscode-button-foreground: #ffffff;
+    --vscode-panel-background: #1e1e1e;
+    --vscode-panel-border: #808080;
+    --vscode-badge-background: #4d4d4d;
+    --vscode-badge-foreground: #ffffff;
+    --vscode-list-hoverBackground: #2a2d2e;
+    --vscode-list-activeSelectionBackground: #094771;
+    --vscode-list-activeSelectionForeground: #ffffff;
+    --vscode-editorWidget-background: #252526;
+    --vscode-editorWidget-border: #454545;
+    --vscode-textLink-foreground: #3794ff;
+    --vscode-textPreformat-foreground: #d7ba7d;
+}
+
+/* Hide Snapshot Tab */
+.tab-btn[data-view='snapshot'] {
+    display: none !important;
+}
+
+#snapshot-panel {
+    display: none !important;
+}

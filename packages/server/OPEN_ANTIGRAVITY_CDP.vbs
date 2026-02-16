@@ -1,5 +1,5 @@
 ' AntiBridge v3.0.0 - Open Antigravity with CDP (Silent)
-' This script opens Antigravity with --remote-debugging-port=9000
+' This script opens Antigravity with --remote-debugging-port=9223
 ' No CMD window will appear
 
 Set WshShell = CreateObject("WScript.Shell")
@@ -8,7 +8,7 @@ Set WshShell = CreateObject("WScript.Shell")
 AntigravityPath = """" & WshShell.ExpandEnvironmentStrings("%USERPROFILE%") & "\AppData\Local\Programs\antigravity\Antigravity.exe""""
 
 ' CDP Port
-CDPPort = "9000"
+CDPPort = "9223"
 
 ' Command to run
 Command = AntigravityPath & " --remote-debugging-port=" & CDPPort
